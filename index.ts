@@ -84,7 +84,7 @@ server.listen(port, () => {
     try {
       isChecking = true;
       console.log('⏰ Проверяем задачу...=====================>>>>>>>>>>>>>>>>');
-      const task = await getTaskQuickly();
+      const task = await getTask();
       console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', task);
       
       if (task && Object.keys(task).length > 0 ) {
