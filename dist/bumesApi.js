@@ -132,6 +132,7 @@ const getTaskQuickly = () => __awaiter(void 0, void 0, void 0, function* () {
             return null;
         }
         const data = yield response.json();
+        console.log('getTaskQuickly', data);
         return data;
     }
     catch (error) {

@@ -159,6 +159,7 @@ export const getTaskQuickly = async (): Promise<any> => {
         }
 
         const data = await response.json();
+        console.log('getTaskQuickly', data);
         return data;
     } catch (error) {
         return null;
