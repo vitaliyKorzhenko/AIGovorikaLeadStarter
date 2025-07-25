@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.triggerN8nWebhook = exports.getTask = exports.loginToAdminPanel = exports.clearToken = exports.setCurrentToken = exports.getCurrentToken = exports.setCredentials = void 0;
+exports.triggerN8nWebhook = exports.getTaskQuickly = exports.getTask = exports.loginToAdminPanel = exports.clearToken = exports.setCurrentToken = exports.getCurrentToken = exports.setCredentials = void 0;
 const MAIN_URL = 'https://main.okk24.com';
 const BASE_URL = MAIN_URL;
 // Константы для авторизации
@@ -108,6 +108,37 @@ const getTask = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTask = getTask;
+// https://main.okk24.com/bumess/api/task/get_quickly - get Task Quickly
+const getTaskQuickly = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const loginResponse = yield (0, exports.loginToAdminPanel)();
+        if (!loginResponse.success) {
+            return null;
+        }
+        const token = (0, exports.getCurrentToken)();
+        if (!token) {
+            return null;
+        }
+        const response = yield fetch(`${BASE_URL}/bumess/api/task/get_quickly`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token.token}`,
+                'Accept': 'application/json',
+                'Origin': BASE_URL,
+                'Referer': `${BASE_URL}/login`
+            }
+        });
+        if (!response) {
+            return null;
+        }
+        const data = yield response.json();
+        return data;
+    }
+    catch (error) {
+        return null;
+    }
+});
+exports.getTaskQuickly = getTaskQuickly;
 const triggerN8nWebhook = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield fetch(triggerWebhookUrl, {

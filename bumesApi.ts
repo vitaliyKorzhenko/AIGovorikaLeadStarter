@@ -133,8 +133,37 @@ export const getTask = async (): Promise<any> => {
     }
 }
 
+// https://main.okk24.com/bumess/api/task/get_quickly - get Task Quickly
+export const getTaskQuickly = async (): Promise<any> => {
+    try {
+        const loginResponse = await loginToAdminPanel();
+        if (!loginResponse.success) {
+            return null;
+        }
+        const token = getCurrentToken();
+        if (!token) {
+            return null;
+        }
+        const response = await fetch(`${BASE_URL}/bumess/api/task/get_quickly`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token.token}`,
+                'Accept': 'application/json',
+                'Origin': BASE_URL,
+                'Referer': `${BASE_URL}/login`
+            }
+        });
+  
+        if (!response) {
+            return null;
+        }
 
-
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
 
 export const triggerN8nWebhook = async (): Promise<any> => {
     try {

@@ -83,7 +83,7 @@ server.listen(port, () => {
         try {
             isChecking = true;
             console.log('⏰ Проверяем задачу...=====================>>>>>>>>>>>>>>>>');
-            const task = yield (0, bumesApi_1.getTask)();
+            const task = yield (0, bumesApi_1.getTaskQuickly)();
             console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', task);
             if (task && Object.keys(task).length > 0) {
                 let taskId = task.data.id;

@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getTask, triggerN8nWebhook } from './bumesApi';
+import { getTask, getTaskQuickly, triggerN8nWebhook } from './bumesApi';
 import fs from 'fs';
 
 
@@ -84,7 +84,7 @@ server.listen(port, () => {
     try {
       isChecking = true;
       console.log('⏰ Проверяем задачу...=====================>>>>>>>>>>>>>>>>');
-      const task = await getTask();
+      const task = await getTaskQuickly();
       console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', task);
       
       if (task && Object.keys(task).length > 0 ) {
