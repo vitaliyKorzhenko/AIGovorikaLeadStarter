@@ -17,7 +17,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
-const CHECK_INTERVAL = 30000; // 30 секунд
+const CHECK_INTERVAL = 20000; // 30 секунд
 
 // Флаг для отслеживания процесса
 let isChecking = false;
@@ -84,18 +84,20 @@ server.listen(port, () => {
     try {
       isChecking = true;
       console.log('⏰ Проверяем задачу...=====================>>>>>>>>>>>>>>>>');
-      const task = await getTask();
+      const task = await getTaskQuickly();
       console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', task);
-      
-      if (task && Object.keys(task).length > 0 ) {
-        let taskId = task.data.id;
+      let data = task.data ? task.data : null;
+      console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', data);
+
+      if (data && Object.keys(data).length > 0 ) {
+        let taskId = data.id;
         console.log('📝 Задача ID:', taskId);
         const lastTaskId = readLastTaskId();
         console.log('📝 Последний ID:', lastTaskId);
         if (taskId !== lastTaskId) {
           //update lastTaskId!! 
           updateLastTaskId(taskId);
-          console.log('✅ Задача найдена, дергаем вебхук');
+          console.log('✅ Задача найдена, дергаем вебхук', taskId);
           let res = await triggerN8nWebhook();
           console.log('🎯 Вебхук сработал', res);
           

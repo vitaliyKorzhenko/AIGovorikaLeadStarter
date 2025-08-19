@@ -25,7 +25,7 @@ const fs_1 = __importDefault(require("fs"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
-const CHECK_INTERVAL = 30000; // 30 секунд
+const CHECK_INTERVAL = 20000; // 30 секунд
 // Флаг для отслеживания процесса
 let isChecking = false;
 // Подключаем middleware
@@ -83,17 +83,19 @@ server.listen(port, () => {
         try {
             isChecking = true;
             console.log('⏰ Проверяем задачу...=====================>>>>>>>>>>>>>>>>');
-            const task = yield (0, bumesApi_1.getTask)();
+            const task = yield (0, bumesApi_1.getTaskQuickly)();
             console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', task);
-            if (task && Object.keys(task).length > 0) {
-                let taskId = task.data.id;
+            let data = task.data ? task.data : null;
+            console.log('📦 ПОЛУЧЕНА ЗАДАЧА ДЛЯ РАБОТЫ:', data);
+            if (data && Object.keys(data).length > 0) {
+                let taskId = data.id;
                 console.log('📝 Задача ID:', taskId);
                 const lastTaskId = readLastTaskId();
                 console.log('📝 Последний ID:', lastTaskId);
                 if (taskId !== lastTaskId) {
                     //update lastTaskId!! 
                     updateLastTaskId(taskId);
-                    console.log('✅ Задача найдена, дергаем вебхук');
+                    console.log('✅ Задача найдена, дергаем вебхук', taskId);
                     let res = yield (0, bumesApi_1.triggerN8nWebhook)();
                     console.log('🎯 Вебхук сработал', res);
                     console.log('📝 Обновлен lastTaskId:', taskId);
